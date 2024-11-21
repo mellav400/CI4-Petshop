@@ -19,6 +19,7 @@ class Produk extends BaseController
         return view('v_produk');
     }
 
+    // Untuk menampilkan produk
     public function tampil_produk()
     {
         $produk = $this->produkModel->findAll();
@@ -28,6 +29,7 @@ class Produk extends BaseController
         ]);
     }
 
+    // Untuk mengambil detail produk berdasarkan ID
     public function getProduk($id)
     {
         $produk = $this->produkModel->find($id);
@@ -38,6 +40,7 @@ class Produk extends BaseController
         }
     }
 
+    // Untuk menyimpan produk baru
     public function simpan_produk()
     {
         $validation = \Config\Services::validation();
@@ -46,9 +49,8 @@ class Produk extends BaseController
             'harga' => 'required|decimal',
             'stok' => 'required|integer',
             'gambar' => 'uploaded[gambar]|is_image[gambar]|mime_in[gambar,image/jpg,image/jpeg,image/png,image/gif]|max_size[gambar,2048]', // Validasi gambar
-    ]);
+        ]);
 
-        
         if (!$validation->withRequest($this->request)->run()) {
             return $this->response->setJSON([
                 'status' => 'error',
@@ -56,29 +58,35 @@ class Produk extends BaseController
             ]);
         }
 
+        // Data produk
         $data = [
             'nama_produk' => $this->request->getVar('nama_produk'),
             'harga' => $this->request->getVar('harga'),
             'stok' => $this->request->getVar('stok'),
         ];
 
+        // Proses upload gambar
         $gambar = $this->request->getFile('gambar');
         if ($gambar->isValid() && !$gambar->hasMoved()) {
             $path = 'assets/images/produk/';
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
-            $fileName = $gambar->getRandomName(); 
-            $gambar->move($path, $fileName); 
+            $fileName = $gambar->getRandomName();
+            $gambar->move($path, $fileName);
             $data['gambar'] = $fileName;
         }
+
+        // Simpan data produk ke database
         $this->produkModel->save($data);
+
         return $this->response->setJSON([
             'status' => 'success',
             'message' => 'Data berhasil disimpan.'
         ]);
     }
 
+    // Untuk mengambil data produk untuk diedit
     public function edit_produk($id)
     {
         $produk = $this->produkModel->find($id);
@@ -89,41 +97,61 @@ class Produk extends BaseController
         }
     }
 
-    public function update_produk()
-    {
-        $id = $this->request->getVar('id');
-        $validation = \Config\Services::validation();
-        $validation->setRules([
-            'nama_produk' => 'required',
-            'harga' => 'required|decimal',
-            'stok' => 'required|integer',
-        ]);
+    // Untuk memperbarui data produk
+    public function update()
+{
+    $id = $this->request->getPost('id');
+    $nama_produk = $this->request->getPost('nama_produk');
+    $harga = $this->request->getPost('harga');
+    $stok = $this->request->getPost('stok');
 
-        if (!$validation->withRequest($this->request)->run()) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'errors' => $validation->getErrors(),
-            ]);
+    $produkModel = new ProdukModel();
+    $produk = $produkModel->find($id);
+
+    if (!$produk) {
+        return $this->response->setJSON(['status' => 'error', 'message' => 'Produk tidak ditemukan']);
+    }
+
+    $data = [
+        'nama_produk' => $nama_produk,
+        'harga' => $harga,
+        'stok' => $stok,
+    ];
+
+    // Proses upload gambar baru
+    $fileGambar = $this->request->getFile('gambar');
+    if ($fileGambar && $fileGambar->isValid() && !$fileGambar->hasMoved()) {
+        $newName = $fileGambar->getRandomName();
+        $fileGambar->move(WRITEPATH . 'uploads', $newName);
+
+        // Hapus gambar lama jika ada
+        if (!empty($produk['gambar'])) {
+            $oldPath = WRITEPATH . 'uploads/' . $produk['gambar'];
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
         }
 
-        $data = [
-            'nama_produk' => $this->request->getVar('nama_produk'),
-            'harga' => $this->request->getVar('harga'),
-            'stok' => $this->request->getVar('stok'),
-        ];
-
-        $this->produkModel->update($id, $data);
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Data berhasil diperbarui.'
-        ]);
+        $data['gambar'] = $newName;
     }
-    public function hapus_data($id) {
-        $result = $this->produkModel->delete($id); 
+
+    $produkModel->update($id, $data);
+
+    return $this->response->setJSON(['status' => 'success', 'message' => 'Produk berhasil diperbarui']);
+}
+
+    // Untuk menghapus data produk
+    public function hapus_data($id)
+    {
+       
+        $produk = $this->produkModel->find($id);
+        
+
+        $result = $this->produkModel->delete($id);
         if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Produk berhasil dihapus']);
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Produk berhasil dihapus']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus produk']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menghapus produk']);
         }
     }
 }
