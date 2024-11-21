@@ -79,50 +79,50 @@
                 </div>
             </div>
 
-           <!-- Modal Edit Produk -->
-<div class="modal fade" id="modalEditProduk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditProdukLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-white">
-                <h5 class="modal-title" id="modalEditProdukLabel">Edit Produk</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal Edit Produk -->
+            <div class="modal fade" id="modalEditProduk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditProdukLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning text-white">
+                            <h5 class="modal-title" id="modalEditProdukLabel">Edit Produk</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formEditProduk" enctype="multipart/form-data">
+                                <input type="hidden" id="editProdukId">
+                                <div class="row mb-3">
+                                    <label for="editNamaProduk" class="col-sm-2 col-form-label">Nama Produk</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="editNamaProduk">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="editHargaProduk" class="col-sm-2 col-form-label">Harga</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="editHargaProduk">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="editStokProduk" class="col-sm-2 col-form-label">Stok</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="editStokProduk">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="editGambarProduk" class="col-sm-2 col-form-label">Gambar</label>
+                                    <div class="col-sm-10">
+                                        <input type="file" class="form-control" id="editGambarProduk" name="gambar">
+                                        <div id="previewGambar" class="mt-2"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" id="updateProduk">Update</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="formEditProduk" enctype="multipart/form-data">
-                    <input type="hidden" id="editProdukId">
-                    <div class="row mb-3">
-                        <label for="editNamaProduk" class="col-sm-2 col-form-label">Nama Produk</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="editNamaProduk">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="editHargaProduk" class="col-sm-2 col-form-label">Harga</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="editHargaProduk">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="editStokProduk" class="col-sm-2 col-form-label">Stok</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="editStokProduk">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="editGambarProduk" class="col-sm-2 col-form-label">Gambar</label>
-                        <div class="col-sm-10">
-                            <input type="file" class="form-control" id="editGambarProduk" name="gambar">
-                            <div id="previewGambar" class="mt-2"></div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" id="updateProduk">Update</button>
-            </div>
-        </div>
-    </div>
-</div>
 
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
             <script>
@@ -149,7 +149,7 @@
                                         '<td class="text-center">' + item.stok + '</td>' +
                                         '<td class="text-center">' + gambar + '</td>' +
                                         '<td class="text-center">' +
-                                        '<button class="btn btn-warning btn-sm editProduk" data-id="' + item.produk_id + '"><i class="fa-solid fa-pencil"></i> Edit</button> ' +
+                                        '<button class="btn btn-warning btn-sm editProduk" data-bs-toggle="modal" data-bs-target="#modalEditProduk" data-id="' + item.produk_id + '"><i class="fa-solid fa-pencil"></i> Edit</button> ' +
                                         '<button class="btn btn-danger btn-sm hapusProduk" data-id="' + item.produk_id + '"><i class="fa-solid fa-trash-can"></i> Hapus</button>' +
                                         '</td>' +
                                         '</tr>';
@@ -236,115 +236,116 @@
                         });
                     });
 
-                    $(document).ready(function () {
-    tampilProduk(); // Memanggil fungsi tampil data produk
+                    $(document).ready(function() {
+                        tampilProduk(); // Memanggil fungsi tampil data produk
 
-    // Handle tombol edit
-    $('#produkTable').on('click', '.editProduk', function () {
-        var produkId = $(this).data('id');
+                        // Handle tombol edit
+                        $('#produkTable').on('click', '.editProduk', function() {
+                            var produkId = $(this).data('id');
 
-        $.ajax({
-            url: '<?= base_url('produk/edit/'); ?>' + produkId,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                if (data.status === 'success') {
-                    var produk = data.produk;
-                    $('#editProdukId').val(produk.produk_id);
-                    $('#editNamaProduk').val(produk.nama_produk);
-                    $('#editHargaProduk').val(produk.harga);
-                    $('#editStokProduk').val(produk.stok);
+                            $.ajax({
+                                url: '<?= base_url('produk/edit/'); ?>' + produkId,
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.status === 'success') {
+                                        var produk = data.produk;
+                                        $('#editProdukId').val(produk.produk_id);
+                                        $('#editNamaProduk').val(produk.nama_produk);
+                                        $('#editHargaProduk').val(produk.harga);
+                                        $('#editStokProduk').val(produk.stok);
 
-                    // Tampilkan preview gambar
-                    if (produk.gambar) {
-                        $('#previewGambar').html(`
+                                        // Tampilkan preview gambar
+                                        if (produk.gambar) {
+                                            $('#previewGambar').html(`
                             <img src="<?= base_url('assets/images/produk/'); ?>${produk.gambar}" 
                                  alt="Preview Gambar" 
                                  style="max-width: 200px; max-height: 200px; margin-top: 10px;">
                         `);
-                    } else {
-                        $('#previewGambar').html('Tidak ada gambar');
-                    }
+                                        } else {
+                                            $('#previewGambar').html('Tidak ada gambar');
+                                        }
 
-                    $('#modalEditProduk').modal('show');
-                } else {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "Gagal mendapatkan data produk",
-                        showConfirmButton: false,
-                        timer: 1500
+                                        // $('#modalEditProduk').modal('show');
+
+                                    } else {
+                                        Swal.fire({
+                                            position: "center",
+                                            icon: "error",
+                                            title: "Gagal mendapatkan data produk",
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: "error",
+                                        title: "Terjadi kesalahan",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                }
+                            });
+                        });
+
+                        // Handle tombol update
+                        $('#updateProduk').on('click', function() {
+                            var formData = new FormData();
+
+                            // Tambahkan data ke FormData
+                            formData.append('id', $('#editProdukId').val());
+                            formData.append('nama_produk', $('#editNamaProduk').val());
+                            formData.append('harga', $('#editHargaProduk').val());
+                            formData.append('stok', $('#editStokProduk').val());
+
+                            // Tambahkan file gambar jika dipilih
+                            var gambarFile = $('#editGambarProduk')[0].files[0];
+                            if (gambarFile) {
+                                formData.append('gambar', gambarFile);
+                            }
+
+                            $.ajax({
+                                url: '<?= base_url('produk/update'); ?>',
+                                type: 'POST',
+                                data: formData,
+                                dataType: 'json',
+                                processData: false,
+                                contentType: false,
+                                success: function(hasil) {
+                                    if (hasil.status === 'success') {
+                                        $('#modalEditProduk').modal('hide');
+                                        tampilProduk();
+                                        Swal.fire({
+                                            position: "center",
+                                            icon: "success",
+                                            title: "Produk berhasil diperbarui",
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            position: "center",
+                                            icon: "error",
+                                            title: "Gagal memperbarui produk",
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: "error",
+                                        title: "Terjadi kesalahan",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                }
+                            });
+                        });
                     });
-                }
-            },
-            error: function (xhr, status, error) {
-                Swal.fire({
-                    position: "center",
-                    icon: "error",
-                    title: "Terjadi kesalahan",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        });
-    });
-
-    // Handle tombol update
-    $('#updateProduk').on('click', function () {
-        var formData = new FormData();
-
-        // Tambahkan data ke FormData
-        formData.append('id', $('#editProdukId').val());
-        formData.append('nama_produk', $('#editNamaProduk').val());
-        formData.append('harga', $('#editHargaProduk').val());
-        formData.append('stok', $('#editStokProduk').val());
-
-        // Tambahkan file gambar jika dipilih
-        var gambarFile = $('#editGambarProduk')[0].files[0];
-        if (gambarFile) {
-            formData.append('gambar', gambarFile);
-        }
-
-        $.ajax({
-            url: '<?= base_url('produk/update'); ?>',
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            processData: false,
-            contentType: false,
-            success: function (hasil) {
-                if (hasil.status === 'success') {
-                    $('#modalEditProduk').modal('hide');
-                    tampilProduk();
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Produk berhasil diperbarui",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                } else {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "Gagal memperbarui produk",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                Swal.fire({
-                    position: "center",
-                    icon: "error",
-                    title: "Terjadi kesalahan",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        });
-    });
-});
 
 
                 });
