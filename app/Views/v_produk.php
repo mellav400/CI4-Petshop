@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-
+        </div>
             <!-- Modal Edit Produk -->
             <div class="modal fade" id="modalEditProduk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditProdukLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">

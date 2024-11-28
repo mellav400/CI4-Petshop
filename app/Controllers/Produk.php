@@ -98,7 +98,7 @@ class Produk extends BaseController
     }
 
     // Untuk memperbarui data produk
-    public function update()
+    public function update_produk()
 {
     $id = $this->request->getPost('id');
     $nama_produk = $this->request->getPost('nama_produk');
@@ -122,11 +122,11 @@ class Produk extends BaseController
     $fileGambar = $this->request->getFile('gambar');
     if ($fileGambar && $fileGambar->isValid() && !$fileGambar->hasMoved()) {
         $newName = $fileGambar->getRandomName();
-        $fileGambar->move(WRITEPATH . 'uploads', $newName);
+        $fileGambar->move(ROOTPATH . 'public/assets/images/produk', $newName);
 
         // Hapus gambar lama jika ada
         if (!empty($produk['gambar'])) {
-            $oldPath = WRITEPATH . 'uploads/' . $produk['gambar'];
+            $oldPath = ROOTPATH . 'public/assets/images/produk' . $produk['gambar'];
             if (file_exists($oldPath)) {
                 unlink($oldPath);
             }
